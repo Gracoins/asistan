@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Knock Knock Who's Hair — Phone Assistant Demo</title>
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Knock Knock Who's Hair — when the phone goes unanswered">
+<meta property="og:description" content="Phone Assistant Demo · 48 seconds">
+<meta property="og:url" content="https://gracoins.github.io/asistan/knock-knock-whos-hair/">
+<meta property="og:image" content="https://gracoins.github.io/asistan/knock-knock-whos-hair/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0F1115;--ink-2:#161A21;--ink-3:#1E232B;--paper:#F7F6F3;
+ --silver:#A7ADB8;--platinum:#C9CFD8;--champagne:#C4A87C;--champagne-lt:#E0CDAC;
+ --wa:#25D366;--muted:rgba(247,246,243,.62);--hair:rgba(247,246,243,.11);
+ --d:'Fraunces',Georgia,serif;--b:'Plus Jakarta Sans',system-ui,sans-serif;
+ --ez:cubic-bezier(.32,.72,0,1);--gut:clamp(1.15rem,5vw,2.5rem);
+ --amb:0 30px 80px -34px rgba(0,0,0,.8)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{background:var(--ink);color:var(--paper);font-family:var(--b);font-weight:300;
+ line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.grain{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+.w{width:min(680px,100% - var(--gut)*2);margin-inline:auto}
+section{padding:clamp(2.6rem,7vw,4.2rem) 0}
+h1,h2{font-family:var(--d);font-weight:400;line-height:1.05;letter-spacing:-.028em}
+.eyebrow{display:inline-flex;align-items:center;gap:.6em;border-radius:100px;padding:.5em 1em;
+ font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500;
+ background:rgba(247,246,243,.055);border:1px solid var(--hair);color:var(--platinum)}
+.eyebrow::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--champagne)}
+.shell{padding:6px;border-radius:2rem;background:rgba(247,246,243,.045);
+ border:1px solid var(--hair);box-shadow:var(--amb)}
+.shell>.core{border-radius:calc(2rem - 6px);background:var(--ink-2);
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.09);padding:clamp(1.4rem,4vw,2rem)}
+.rv{opacity:0;transform:translateY(46px);filter:blur(8px);
+ transition:opacity .9s var(--ez),transform .9s var(--ez),filter .9s var(--ez)}
+.rv.in{opacity:1;transform:none;filter:blur(0)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}}
+
+.hero{padding-top:clamp(3.4rem,11vw,6rem);position:relative}
+.hero::before{content:"";position:absolute;width:110vmax;height:110vmax;left:-45vmax;top:-62vmax;
+ background:radial-gradient(circle,rgba(140,166,204,.14),transparent 62%);pointer-events:none}
+.hero h1{font-size:clamp(2.3rem,8vw,3.5rem);margin:1.3rem 0 .1rem;position:relative}
+.hero h1 em{display:block;font-style:italic;font-weight:300;color:var(--platinum);
+ font-size:.72em;margin-top:.12em}
+.lead{margin-top:1.3rem;color:var(--muted);position:relative}
+
+.player{display:flex;align-items:center;gap:clamp(14px,3.5vw,20px)}
+.play{width:64px;height:64px;flex:none;border-radius:50%;border:1px solid var(--hair);
+ background:var(--paper);color:var(--ink);display:grid;place-items:center;cursor:pointer;
+ transition:transform .7s var(--ez)}
+.play:active{transform:scale(.96)}
+.play svg{width:24px;height:24px;grid-area:1/1}
+.i-pause{display:none}
+body.calan .i-play{display:none} body.calan .i-pause{display:block}
+.pinfo{flex:1;min-width:0}
+.plabel{display:block;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--platinum);margin-bottom:.7rem}
+.bar{height:4px;border-radius:100px;background:rgba(247,246,243,.13);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:100px;
+ background:linear-gradient(90deg,var(--champagne),var(--champagne-lt))}
+.ptime{display:block;margin-top:.6rem;font-size:.76rem;color:var(--silver)}
+.ptime b{color:var(--paper);font-weight:500}
+
+.sbas{margin-bottom:1.4rem}
+.sbas h2{font-size:clamp(1.5rem,4.6vw,2rem);margin:.7rem 0 .4rem}
+.sbas p{color:var(--muted);font-size:.93rem}
+.rep{margin-bottom:.85rem;max-width:88%}
+.rep .kim{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--silver);
+ display:block;margin-bottom:.3rem}
+.rep p{padding:.85rem 1.1rem;border-radius:1.1rem;font-size:.94rem}
+.rep.aj p{background:var(--ink-3);border:1px solid var(--hair);border-bottom-left-radius:.35rem}
+.rep.ar{margin-left:auto}
+.rep.ar .kim{text-align:right}
+.rep.ar p{background:rgba(196,168,124,.14);border:1px solid rgba(196,168,124,.28);
+ border-bottom-right-radius:.35rem}
+
+.wa-core{background:#0B141A!important;padding:1.5rem 1.2rem!important}
+.wa-bas{display:flex;align-items:center;gap:10px;padding-bottom:1rem;margin-bottom:1rem;
+ border-bottom:1px solid rgba(247,246,243,.09)}
+.wa-bas .dot{width:34px;height:34px;border-radius:50%;background:var(--wa);flex:none;
+ display:grid;place-items:center}
+.wa-bas .dot svg{width:19px;height:19px;fill:#0B141A}
+.wa-bas b{font-weight:500;font-size:.9rem}
+.wa-bas i{font-style:normal;display:block;font-size:.7rem;color:var(--silver)}
+.balon{background:#005C4B;border-radius:1rem;border-top-right-radius:.35rem;
+ padding:.9rem 1.1rem;max-width:94%;margin-left:auto;font-size:.9rem}
+.nsat{white-space:pre-wrap} .nbos{height:.6rem}
+
+.kur li{list-style:none;display:flex;gap:11px;align-items:flex-start;font-size:.94rem;
+ margin-bottom:.7rem}
+.kur svg{width:15px;height:15px;color:var(--champagne);flex:none;margin-top:.42rem}
+
+.hi>.core{background:linear-gradient(150deg,var(--ink-3),var(--ink-2))}
+.hilead{color:var(--muted);margin:.9rem 0 1.4rem;font-size:.96rem}
+.pill{display:inline-flex;align-items:center;gap:12px;border-radius:100px;
+ padding:12px 12px 12px 26px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+ font-weight:500;font-family:var(--b);border:none;cursor:pointer;min-height:52px;
+ text-decoration:none;transition:transform .7s var(--ez),background .7s var(--ez)}
+.pill .knob{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;
+ transition:transform .7s var(--ez),background .7s var(--ez)}
+.pill .knob svg{width:15px;height:15px}
+.pill:active{transform:scale(.978)}
+.pill-light{background:var(--paper);color:var(--ink)}
+.pill-light .knob{background:rgba(15,17,21,.08)}
+.pill-light:hover .knob{transform:translate(2px,-1px) scale(1.06);background:rgba(15,17,21,.15)}
+.pill-light:disabled{opacity:.55;cursor:default}
+.pill.canli{background:#E05B5B;color:#fff}
+.pill.canli .knob{background:rgba(255,255,255,.2)}
+.pill-wa{background:var(--wa);color:#06231A}
+.pill-wa .knob{background:rgba(6,35,26,.14)}
+.pill-wa:hover .knob{transform:translate(2px,-1px) scale(1.06)}
+.durum{margin-top:.9rem;font-size:.85rem;color:var(--champagne-lt);min-height:1.2em}
+
+footer{padding:clamp(2.4rem,6vw,3.4rem) 0 clamp(3rem,8vw,4rem);
+ border-top:1px solid var(--hair);margin-top:1.5rem}
+footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="hero"><div class="w">
+  <span class="eyebrow rv">Phone Assistant Demo</span>
+  <h1 class="rv" style="transition-delay:.06s">Knock Knock Who's Hair<em>when the phone goes unanswered</em></h1>
+  <p class="lead rv" style="transition-delay:.12s">The call below isn't real — it's an example made for Knock Knock Who's Hair. The assistant answers in your salon's name, takes the details, then passes them to you.</p>
+</div></header>
+
+<section style="padding-top:0"><div class="w">
+  <div class="shell rv"><div class="core player">
+    <button class="play" id="oyn" aria-label="Listen to the demo call">
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.4v14H7zM13.6 5H17v14h-3.4z"/></svg>
+    </button>
+    <div class="pinfo">
+      <span class="plabel">Listen to the demo call</span>
+      <div class="bar"><i id="ilerle"></i></div>
+      <span class="ptime"><b id="simdi">0:00</b> / 0:48 · 48 seconds</span>
+    </div>
+    <audio id="ses" src="demo.mp3" preload="metadata"></audio>
+  </div></div></div></section>
+
+<section><div class="w">
+  <div class="sbas rv"><span class="eyebrow">Full conversation</span>
+    <p style="margin-top:.9rem">Can't turn the sound on? Read it instead.</p></div>
+  <div class="rv" style="transition-delay:.06s"><div class="rep aj"><span class="kim">Emma</span><p>Hello, Knock Knock Who's Hair, Emma speaking. How can I help?</p></div><div class="rep ar"><span class="kim">Caller</span><p>Hi, I'd like to book my son in for a haircut.</p></div><div class="rep aj"><span class="kim">Emma</span><p>Of course, that sounds lovely. May I have your name, please?</p></div><div class="rep ar"><span class="kim">Caller</span><p>Lucy Harper. He's four, it'd be his second time.</p></div><div class="rep aj"><span class="kim">Emma</span><p>That is lovely to hear, Lucy. What day and time were you hoping to bring him in?</p></div><div class="rep ar"><span class="kim">Caller</span><p>Saturday morning if you have anything.</p></div><div class="rep aj"><span class="kim">Emma</span><p>I will make a note of that for Saturday morning. Could I please have a contact number to reach you on?</p></div><div class="rep ar"><span class="kim">Caller</span><p>07700 900608.</p></div><div class="rep aj"><span class="kim">Emma</span><p>Thank you, that is 07700 900608. I have passed these details over and the salon will call you shortly to confirm the time.</p></div></div>
+</div></section>
+
+<section><div class="w">
+  <div class="sbas rv"><span class="eyebrow">What lands on your phone the moment the call ends</span>
+    <h2>The note sent to the salon's WhatsApp. All you do is call back.</h2></div>
+  <div class="shell rv" style="transition-delay:.06s"><div class="core wa-core">
+    <div class="wa-bas">
+      <span class="dot"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span>
+      <span><b>Knock Knock Who's Hair</b><i>WhatsApp</i></span>
+    </div>
+    <div class="balon"><div class="nsat">Missed call captured</div><div class="nbos"></div><div class="nsat">Name: Lucy Harper</div><div class="nsat">Wants: Haircut for son</div><div class="nsat">When: Saturday morning</div><div class="nsat">Phone: 07700 900608</div><div class="nsat">Note: -</div></div>
+  </div></div>
+</div></section>
+
+<section><div class="w">
+  <div class="sbas rv"><span class="eyebrow">Rules the assistant cannot break</span>
+    <p style="margin-top:.9rem">The limits that stop a customer being promised the wrong thing.</p></div>
+  <div class="shell rv" style="transition-delay:.06s"><div class="core">
+    <ul class="kur"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>Never quotes a price</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>Never confirms a booking</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>Never invents a service you don't offer</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>Never argues with an upset caller</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>Never hides that it's an AI</li></ul>
+  </div></div>
+</div></section>
+
+
+
+<footer><div class="w">
+  <span class="eyebrow rv">What do you think?</span>
+  <p class="rv" style="transition-delay:.06s;color:var(--muted);margin:.9rem 0 1.4rem">One word is enough.</p>
+  <a class="pill pill-wa rv" style="transition-delay:.12s" href="https://wa.me/447889891885" target="_blank" rel="noopener">Reply on WhatsApp
+    <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 18 18 6M9 6h9v9"/></svg></span>
+  </a>
+  <p class="kk">This page was made only for Knock Knock Who's Hair. · MY BASKETO LTD</p>
+</div></footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')})}
+  else{var io=new IntersectionObserver(function(g){g.forEach(function(x){
+    if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},
+    {threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e)})}
+
+  var ses=document.getElementById('ses');
+  if(ses){
+    var oyn=document.getElementById('oyn'),bar=document.getElementById('ilerle'),
+        sim=document.getElementById('simdi');
+    oyn.addEventListener('click',function(){ses.paused?ses.play():ses.pause()});
+    ses.addEventListener('play',function(){document.body.classList.add('calan')});
+    ses.addEventListener('pause',function(){document.body.classList.remove('calan')});
+    ses.addEventListener('ended',function(){document.body.classList.remove('calan')});
+    ses.addEventListener('timeupdate',function(){
+      if(!ses.duration)return;
+      bar.style.width=(ses.currentTime/ses.duration*100)+'%';
+      var s=Math.floor(ses.currentTime);
+      sim.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    });
+  }
+})();
+</script>
+</body>
+</html>
