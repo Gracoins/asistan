@@ -174,6 +174,17 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
 </div></section>
 
 
+<section><div class="w">
+  <div class="shell hi rv"><div class="core">
+    <span class="eyebrow">Want to talk to it yourself?</span>
+    <p class="hilead">Press the button and the Trinder Hair Studios assistant will answer. Free, no sign-up.</p>
+    <button class="pill pill-light" id="cagir">
+      <span id="cagir-yazi">Call the assistant</span>
+      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 5.5c0 7.7 6.3 14 14 14l1.5-3-4-2-2 2a14 14 0 0 1-6.5-6.5l2-2-2-4z"/></svg></span>
+    </button>
+    <p class="durum" id="durum"></p>
+  </div></div>
+</div></section>
 
 <footer><div class="w">
   <span class="eyebrow rv">What do you think?</span>
@@ -210,5 +221,24 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
   }
 })();
 </script>
+<script type="module">
+  import Vapi from "https://esm.sh/@vapi-ai/web@2";
+  var btn=document.getElementById("cagir"), yazi=document.getElementById("cagir-yazi"),
+      durum=document.getElementById("durum");
+  var vapi=new Vapi("b000665b-8c65-4a28-bc09-30d8f1a5eee1"), acik=false;
+  btn.addEventListener("click", async function(){
+    if(acik){ vapi.stop(); return; }
+    durum.textContent="Connecting…"; btn.disabled=true;
+    try{ await vapi.start("e5ca6e52-ee72-4cd2-8218-1ec2b22bd94e"); }
+    catch(e){ durum.textContent="Couldn't connect. Check your microphone permission."; btn.disabled=false; }
+  });
+  vapi.on("call-start",function(){acik=true;btn.disabled=false;
+    yazi.textContent="End call";durum.textContent="Go ahead, speak";btn.classList.add("canli");});
+  vapi.on("call-end",function(){acik=false;yazi.textContent="Call the assistant";
+    durum.textContent="";btn.classList.remove("canli");});
+  vapi.on("error",function(){acik=false;btn.disabled=false;
+    durum.textContent="Couldn't connect. Check your microphone permission.";btn.classList.remove("canli");});
+</script>
+
 </body>
 </html>
