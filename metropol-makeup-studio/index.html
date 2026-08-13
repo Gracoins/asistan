@@ -174,6 +174,17 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
 </div></section>
 
 
+<section><div class="w">
+  <div class="shell hi rv"><div class="core">
+    <span class="eyebrow">Kendiniz konuşmak ister misiniz?</span>
+    <p class="hilead">Butona basın, Metropol Makeup Studio asistanı size açsın. Ücretsiz, kayıt yok.</p>
+    <button class="pill pill-light" id="cagir">
+      <span id="cagir-yazi">Asistanı ara</span>
+      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 5.5c0 7.7 6.3 14 14 14l1.5-3-4-2-2 2a14 14 0 0 1-6.5-6.5l2-2-2-4z"/></svg></span>
+    </button>
+    <p class="durum" id="durum"></p>
+  </div></div>
+</div></section>
 
 <footer><div class="w">
   <span class="eyebrow rv">Ne düşündünüz?</span>
@@ -210,5 +221,24 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
   }
 })();
 </script>
+<script type="module">
+  import Vapi from "https://esm.sh/@vapi-ai/web@2";
+  var btn=document.getElementById("cagir"), yazi=document.getElementById("cagir-yazi"),
+      durum=document.getElementById("durum");
+  var vapi=new Vapi("b000665b-8c65-4a28-bc09-30d8f1a5eee1"), acik=false;
+  btn.addEventListener("click", async function(){
+    if(acik){ vapi.stop(); return; }
+    durum.textContent="Bağlanıyor…"; btn.disabled=true;
+    try{ await vapi.start("3065ecc4-81a7-4a69-948c-89f6ab07056d"); }
+    catch(e){ durum.textContent="Bağlanamadı. Mikrofon izni verdiğinizden emin olun."; btn.disabled=false; }
+  });
+  vapi.on("call-start",function(){acik=true;btn.disabled=false;
+    yazi.textContent="Görüşmeyi bitir";durum.textContent="Konuşabilirsiniz";btn.classList.add("canli");});
+  vapi.on("call-end",function(){acik=false;yazi.textContent="Asistanı ara";
+    durum.textContent="";btn.classList.remove("canli");});
+  vapi.on("error",function(){acik=false;btn.disabled=false;
+    durum.textContent="Bağlanamadı. Mikrofon izni verdiğinizden emin olun.";btn.classList.remove("canli");});
+</script>
+
 </body>
 </html>
