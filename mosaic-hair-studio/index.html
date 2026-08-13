@@ -51,6 +51,16 @@ h1,h2{font-family:var(--d);font-weight:400;line-height:1.05;letter-spacing:-.028
 .hero h1 em{display:block;font-style:italic;font-weight:300;color:var(--platinum);
  font-size:.72em;margin-top:.12em}
 .lead{margin-top:1.3rem;color:var(--muted);position:relative}
+/* birincil eylem — sayfanin EN USTUNDE. Urunun kendisi bu; asagi
+   inmeyen aday da denesin diye hero'ya alindi (2026-08-13). */
+.aracta{position:relative;margin-top:1.9rem}
+.aracta .pill{font-size:.88rem;padding:15px 15px 15px 30px;min-height:60px}
+.aracta .pill .knob{width:38px;height:38px}
+.arasat{display:block;margin-top:.9rem;font-size:.82rem;color:var(--silver)}
+.arasat b{color:var(--champagne-lt);font-weight:500}
+.izin{display:block;margin-top:.35rem;font-size:.76rem;color:rgba(247,246,243,.42)}
+.dinlebas{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+ color:var(--silver);margin-bottom:.9rem;display:block}
 
 .player{display:flex;align-items:center;gap:clamp(14px,3.5vw,20px)}
 .play{width:64px;height:64px;flex:none;border-radius:50%;border:1px solid var(--hair);
@@ -130,22 +140,34 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
 <header class="hero"><div class="w">
   <span class="eyebrow rv">Phone Assistant Demo</span>
   <h1 class="rv" style="transition-delay:.06s">Mosaic Hair Studio<em>when the phone goes unanswered</em></h1>
-  <p class="lead rv" style="transition-delay:.12s">The call below isn't real — it's an example made for Mosaic Hair Studio. The assistant answers in your salon's name, takes the details, then passes them to you.</p>
+  <p class="lead rv" style="transition-delay:.12s">I've set up a phone assistant for Mosaic Hair Studio. It answers in your salon's name, takes the caller's details and passes them to you. Rather than describe it — talk to it yourself.</p>
+  
+  <div class="aracta rv" style="transition-delay:.18s">
+    <button class="pill pill-light cagir">
+      <span class="cagir-yazi">Call the assistant</span>
+      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 5.5c0 7.7 6.3 14 14 14l1.5-3-4-2-2 2a14 14 0 0 1-6.5-6.5l2-2-2-4z"/></svg></span>
+    </button>
+    <span class="arasat"><b>Free · no sign-up · takes half a minute</b></span>
+    <span class="izin">It will ask for microphone permission. Turn your volume up.</span>
+    <p class="durum" id="durum"></p>
+  </div>
 </div></header>
 
 <section style="padding-top:0"><div class="w">
+  <span class="dinlebas rv">Or listen to a recorded example first</span>
   <div class="shell rv"><div class="core player">
-    <button class="play" id="oyn" aria-label="Listen to the demo call">
+    <button class="play" id="oyn" aria-label="Recorded example">
       <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
       <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.4v14H7zM13.6 5H17v14h-3.4z"/></svg>
     </button>
     <div class="pinfo">
-      <span class="plabel">Listen to the demo call</span>
+      <span class="plabel">Recorded example</span>
       <div class="bar"><i id="ilerle"></i></div>
       <span class="ptime"><b id="simdi">0:00</b> / 0:48 · 48 seconds</span>
     </div>
     <audio id="ses" src="demo.mp3" preload="metadata"></audio>
-  </div></div></div></section>
+  </div></div>
+</div></section>
 
 <section><div class="w">
   <div class="sbas rv"><span class="eyebrow">Full conversation</span>
@@ -178,11 +200,11 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
   <div class="shell hi rv"><div class="core">
     <span class="eyebrow">Want to talk to it yourself?</span>
     <p class="hilead">Press the button and the Mosaic Hair Studio assistant will answer. Free, no sign-up.</p>
-    <button class="pill pill-light" id="cagir">
-      <span id="cagir-yazi">Call the assistant</span>
+    <button class="pill pill-light cagir">
+      <span class="cagir-yazi">Call the assistant</span>
       <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 5.5c0 7.7 6.3 14 14 14l1.5-3-4-2-2 2a14 14 0 0 1-6.5-6.5l2-2-2-4z"/></svg></span>
     </button>
-    <p class="durum" id="durum"></p>
+    <p class="durum"></p>
   </div></div>
 </div></section>
 
@@ -223,21 +245,28 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
 </script>
 <script type="module">
   import Vapi from "https://esm.sh/@vapi-ai/web@2";
-  var btn=document.getElementById("cagir"), yazi=document.getElementById("cagir-yazi"),
-      durum=document.getElementById("durum");
+  // Sayfada IKI buton var (hero + alt). Ikisi de ayni cagriyi yonetiyor.
+  var butonlar=[].slice.call(document.querySelectorAll(".cagir"));
+  var durumlar=[].slice.call(document.querySelectorAll(".durum"));
+  function yaz(t){ durumlar.forEach(function(d){ d.textContent=t; }); }
+  function etiket(t){ butonlar.forEach(function(b){
+    b.querySelector(".cagir-yazi").textContent=t; }); }
+  function kilit(v){ butonlar.forEach(function(b){ b.disabled=v; }); }
+  function canli(v){ butonlar.forEach(function(b){ b.classList.toggle("canli",v); }); }
+
   var vapi=new Vapi("b000665b-8c65-4a28-bc09-30d8f1a5eee1"), acik=false;
-  btn.addEventListener("click", async function(){
-    if(acik){ vapi.stop(); return; }
-    durum.textContent="Connecting…"; btn.disabled=true;
-    try{ await vapi.start("773cee23-b160-4ad2-800a-6dd8915ad584"); }
-    catch(e){ durum.textContent="Couldn't connect. Check your microphone permission."; btn.disabled=false; }
+  butonlar.forEach(function(b){
+    b.addEventListener("click", async function(){
+      if(acik){ vapi.stop(); return; }
+      yaz("Connecting…"); kilit(true);
+      try{ await vapi.start("773cee23-b160-4ad2-800a-6dd8915ad584"); }
+      catch(e){ yaz("Couldn't connect. Check your microphone permission."); kilit(false); }
+    });
   });
-  vapi.on("call-start",function(){acik=true;btn.disabled=false;
-    yazi.textContent="End call";durum.textContent="Go ahead, speak";btn.classList.add("canli");});
-  vapi.on("call-end",function(){acik=false;yazi.textContent="Call the assistant";
-    durum.textContent="";btn.classList.remove("canli");});
-  vapi.on("error",function(){acik=false;btn.disabled=false;
-    durum.textContent="Couldn't connect. Check your microphone permission.";btn.classList.remove("canli");});
+  vapi.on("call-start",function(){acik=true;kilit(false);
+    etiket("End call");yaz("Go ahead, speak");canli(true);});
+  vapi.on("call-end",function(){acik=false;etiket("Call the assistant");yaz("");canli(false);});
+  vapi.on("error",function(){acik=false;kilit(false);yaz("Couldn't connect. Check your microphone permission.");canli(false);});
 </script>
 
 </body>
