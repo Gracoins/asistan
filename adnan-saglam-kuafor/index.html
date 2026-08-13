@@ -254,7 +254,7 @@ footer .kk{font-size:.76rem;color:var(--silver);margin-top:1.4rem}
   function kilit(v){ butonlar.forEach(function(b){ b.disabled=v; }); }
   function canli(v){ butonlar.forEach(function(b){ b.classList.toggle("canli",v); }); }
 
-  var vapi=new Vapi("b000665b-8c65-4a28-bc09-30d8f1a5eee1"), acik=false;
+  var vapi=new Vapi("a72f5ef1-022c-4b4d-859b-35316c336efc"), acik=false;
   butonlar.forEach(function(b){
     b.addEventListener("click", async function(){
       if(acik){ vapi.stop(); return; }
